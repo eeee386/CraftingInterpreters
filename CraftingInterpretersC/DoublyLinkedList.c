@@ -2,46 +2,65 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef struct Node {
+struct Node {
     struct Node* parent_node;
     int value;
     struct Node* child_node;
 } Node;
 
-DoublyLinkedList list = {NULL, NULL, 0};
+struct Node* head; // global variable - pointer to head node.
 
-int delete(struct DoublyLinkedList * list, int value) {
-    Node * node = list->start_node;
-    while(node) {
+struct Node* GetNewNode(int value) {
+	struct Node* newNode
+		= (struct Node*)malloc(sizeof(struct Node));
+	newNode->value = value;
+	newNode->parent_node = NULL;
+	newNode->child_node = NULL;
+	return newNode;
+}
+
+
+void delete(int value) {
+    struct Node * node = head;
+    while(node != NULL) {
         if(node->value == value) {
+            printf("delete\n");
             struct Node* child_node = node->child_node;
             struct Node* parent_node = node->parent_node;
-            parent_node->child_node = child_node;
-            child_node->parent_node = parent_node;
-            return 1;
+            if(parent_node != NULL) {
+                parent_node->child_node = child_node;
+                head = child_node;
+            }
+            if(child_node != NULL){
+                child_node->parent_node = parent_node;
+            }
         }
         node = node->child_node;
     }
-    return 0;
 }
 
-int insert(struct DoublyLinkedList * list, int value) {
-    Node newNode = {list->end_node, value, NULL};
-    if(!list->start_node){
-        list->start_node = &newNode;
+void append(int value) {
+    struct Node * node = head;
+    struct Node * newNode = GetNewNode(value);
+
+    if(node == NULL){
+        head = newNode;
+        return;
     }
-    newNode.value = value;
-    newNode.parent_node = list->end_node;
-    newNode.child_node = NULL;
-    list->end_node = &newNode;
-    list->size++;
-    return 0;
+    while(node->child_node){
+
+        node = node->child_node;
+    }
+    node->child_node = newNode;
+    return;
+
 }
 
-Node* find(struct DoublyLinkedList * list, int value){
-    struct Node * node = list->start_node;
+struct Node* find(int value){
+    struct Node * node = head;
     while(node != NULL) {
         if(node->value == value){
+            printf("it is called");
             return node;
         }
         node = node->child_node;
@@ -49,49 +68,45 @@ Node* find(struct DoublyLinkedList * list, int value){
     return NULL;
 }
 
-void print(struct DoublyLinkedList * list) {
-    printf("print is called\n");
-    int value = list->start_node->value;
-    printf("value %d\n", value);
-    Node * node = list->start_node;
-    //printf("node pointer: %p\n", list->start_node->value);
+void print() {
+    struct Node * node = head;
     while(node != NULL){
         printf("%d\n", node->value);
         node = node->child_node;
-        printf("childNode %p\n", node);
     }
     return;
 }
 
 
 int main() {
-    struct DoublyLinkedList list = {NULL, NULL, 0};
-    struct DoublyLinkedList * pointer = &list;
-    insert(pointer, 1);
-    printf("insert %p\n", list.start_node);
-    insert(pointer, 2);
-    insert(pointer, 3);
-    insert(pointer, 4);
-    insert(pointer, 5);
+    struct Node * head = NULL;
+    append(1);
+    append(2);
+    append(3);
+    append(4);
+    append(5);
 
-    print(pointer);
+    print(head);
 
-    /*Node* node1 = find(1);
+    struct Node* node1 = find(1);
     printf("%d\n", node1->value);
 
-    Node* node2 = find(2);
+    struct Node* node2 = find(2);
     printf("%d\n", node2->value);
 
-    Node* node3 = find(3);
+    struct Node* node3 = find(3);
     printf("%d\n", node3->value);
 
-    Node* node4 = find(4);
+    struct Node* node4 = find(4);
     printf("%d\n", node4->value);
 
-    Node* node5 = find(5);
+    struct Node* node5 = find(5);
     printf("%d\n", node5->value);
 
-    delete(list, 1);
-    find(list, 1);*/
+    delete(1);
+    struct Node* nodeDeleted = find(1);
+    printf("%p\n", nodeDeleted);
+
+    print(head);
     return 0;
 }
