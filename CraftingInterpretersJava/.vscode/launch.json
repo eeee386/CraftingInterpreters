@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - Lox",
+            "request": "launch",
+            "mainClass": "com.craftinginterpreters.lox.Lox",
+            "projectName": "CraftingInterpretersJava_d2b21c54"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - GenerateAst",
+            "request": "launch",
+            "mainClass": "com.craftinginterpreters.tool.GenerateAst",
+            "projectName": "CraftingInterpretersJava_d2b21c54",
+            "args": "\\lox"
+        }
+    ]
+}
