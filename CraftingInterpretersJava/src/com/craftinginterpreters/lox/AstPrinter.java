@@ -1,7 +1,7 @@
 package com.craftinginterpreters.lox;
 
 // Creates an unambiguous, if ugly, string representation of AST nodes.
-/*class AstPrinter implements Expr.Visitor<String> {                     
+class AstPrinter implements Expr.Visitor<String> {                     
   String print(Expr expr) {                                            
     return expr.accept(this);                                          
   }  
@@ -50,4 +50,4 @@ package com.craftinginterpreters.lox;
 
     System.out.println(new AstPrinter().print(expression));
   }   
-}   */
+}
